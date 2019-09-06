@@ -1,0 +1,40 @@
+.component-wrapper{
+    margin-top: 20px;
+   
+}
+
+.curr-weather-box{
+    /* width: 80%; */
+    background-color: rgb(194, 194, 194);
+    height: 70vh;
+    padding: 10px;
+    background-image: url('../img/scattered-cloud.png');
+    background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+.search-input{
+    width:40%;
+}
+.flex-center-justify{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-center{
+    display: flex;
+    align-items: center;
+    
+}
+
+.flex-spread-evenly{
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.side-menu{
+
+}
