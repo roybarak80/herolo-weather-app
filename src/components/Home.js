@@ -1,54 +1,80 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getCurrentWeather } from '../actions/sitesActions';
+import { getCurrentForecast } from '../actions/sitesActions';
+import helpers from '../helpers/Helpers';
 import Fade from 'react-reveal/Fade';
 import SearchWeather from './SearchWeather';
 import AddToFavorites from './AddToFavorites';
 import CurrentWeather from './CurrentWeather';
+import CurrForecast from './CurrForecast';
+class Home extends Component {
 
-// import { connect } from 'react-redux';
+    componentWillMount() {
+        
+        this.props.getCurrentWeather();
+        this.props.getCurrentForecast();
 
-const Home = () => (
+    }
 
-    <div className="">
+    render() {
 
-        <div className="row ">
-            <div className="col-md-12">
-                <SearchWeather></SearchWeather>
-            </div>
-        </div>
-        <div className="row curr-weather-box">
-            <div className="col-md-12">
-                <div className="row">
-                    <div className="col-md-12 flex-spread-evenly">
-                        <Fade top>
-                            <CurrentWeather></CurrentWeather>
-                            <AddToFavorites></AddToFavorites>
-                        </Fade>
+        const { currWeather } = this.props;
+        const { currForecast } = this.props;
+        const currWeatherObj = helpers.getWeatherFilteredDataObj(currWeather);
+        // console.log(currForecast);
+        return (
+            <div className="">
+
+                <div className="row ">
+                    <div className="col-md-12">
+                        <SearchWeather></SearchWeather>
                     </div>
                 </div>
-                <Fade top>
-                    <h1>Home</h1>
-                </Fade>
-            </div>
+                <div className="row curr-weather-box">
+                    <div className="col-md-12">
+                        <div className="row">
+                            <div className="col-md-12 flex-spread-evenly">
+                                <Fade top>
+                                    <CurrentWeather weatherInfo={currWeatherObj}></CurrentWeather>
+                                    <AddToFavorites></AddToFavorites>
+                                </Fade>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <Fade top>
+                                    <CurrForecast currForecast={currForecast}></CurrForecast>
+                                </Fade>
+                            </div>
+                        </div>
 
-        </div>
+                    </div>
 
-        {/* <Fade top>
-            <h1>Home</h1>
-        </Fade> */}
+                </div>
 
+            </div >
+        )
+    }
+}
+//getCurrentForecast
+const mapStateToProps = state => {
 
-    </div >
-);
+    return {
+        currWeather: state.sitesReducer.currWeather,
+        currForecast: state.sitesReducer.currForecast
+    }
+}
 
-// const mapStateToProps = state => {
-//   return {
-//     name: state.name
-//   }
-// }
+const mapDispatchToProps = disaptch => {
+    return {
+        getCurrentWeather() {
+            disaptch(getCurrentWeather())
+        },
+        getCurrentForecast() {
+            disaptch(getCurrentForecast())
+        },
+    }
+}
 
-// const mapDispatchToProps = dispatch => ({
-//   onChange: (value) => { dispatch(updateName(value)) }
-// })
-
-//export default connect(mapStateToProps, mapDispatchToProps)(Home);
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
