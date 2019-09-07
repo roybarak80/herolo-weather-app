@@ -1,13 +1,22 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import { createBrowserHistory } from 'history';
 
 import sitesReducer from './reducers/sitesReducer';
-export const history = createBrowserHistory();
-const defaultState = {
-    defaultCityCode: 215854
-};
 
+// const defaultState = {
+//     defaultCityCode: 215854,
+//     metricUnits: 'metric',
+//     theme: 'dark',
+// }
+function metricUnits(state = 'metric', action) {
+    return state
+}
+function defaultState(state = {}, action) {
+    return {
+        defaultCityCode: metricUnits(state.metricUnits, action),
+        //b: b(state.b, action)
+    }
+}
 const store = createStore(
     combineReducers({
         sitesReducer,

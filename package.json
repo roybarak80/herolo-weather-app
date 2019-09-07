@@ -7,8 +7,7 @@
     "npm": "6.9.0"
   },
   "dependencies": {
-    "connected-react-router": "^6.5.2",
-    "history": "^4.9.0",
+    "@material-ui/core": "^4.4.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

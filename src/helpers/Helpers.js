@@ -3,12 +3,19 @@ import moment from "moment";
 
 const helpers = {
 
+    /**
+     * 
+     * @param {*} prmDate 
+     */
     getWeekDay: function (prmDate) {
 
         const currDate = new Date(prmDate);
         var weekDayName = moment(currDate).format('dddd');
         return weekDayName;
     },
+    /**
+     * 
+     */
     checkIfDayTime: function () {
 
         let currDate = new Date();

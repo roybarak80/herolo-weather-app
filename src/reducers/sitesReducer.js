@@ -1,25 +1,30 @@
+
 const initState = {
-    currWeather: [],
+
     currForecast: [],
     cityName: '',
+    cityCode: 215854,
+    isSearchFieldValid: true
 }
+
 
 const sitesReducer = (state = initState, action) => {
 
     switch (action.type) {
         //GET_CURRENT_FORECAST
-        case "GET_CURRENT_WEATHER":
 
-            state = { ...state, currWeather: action.payload }
-            break;
         case "GET_CURRENT_FORECAST":
 
             state = { ...state, currForecast: action.payload }
             break;
-        case "SEARCH_WEATHER_BY_CITY":
-           
-            state = { ...state, cityName: action.payload }
+        case "UPDATE_CITY_CODE":
+
+            state = { ...state, cityCode: action.payload.cityCode }
             break;
+        case "UPDATE_SEARCH_FIELD":
+            state = { ...state, cityName: action.payload.cityName, isSearchFieldValid: action.payload.isSearchFieldValid }
+            break;
+
         default:
             return state;
     }

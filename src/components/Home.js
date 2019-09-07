@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCurrentWeather } from '../actions/sitesActions';
 import { getCurrentForecast } from '../actions/sitesActions';
 import helpers from '../helpers/Helpers';
 import Fade from 'react-reveal/Fade';
@@ -8,24 +7,34 @@ import SearchWeather from './SearchWeather';
 import AddToFavorites from './AddToFavorites';
 import CurrentWeather from './CurrentWeather';
 import CurrForecast from './CurrForecast';
+
 class Home extends Component {
 
     componentWillMount() {
-        
-        this.props.getCurrentWeather();
-        this.props.getCurrentForecast();
+
+        const { cityCode } = this.props;
+        this.props.getCurrentForecast(cityCode);
 
     }
 
+    componentDidUpdate(prevProps) {
+
+        const { cityCode } = this.props;
+        if (prevProps.cityCode != cityCode) {
+            console.log('updating city!!');
+            this.props.getCurrentForecast(cityCode);
+        }
+
+    }
+
+
     render() {
 
-        const { currWeather } = this.props;
         const { currForecast } = this.props;
-        const currWeatherObj = helpers.getWeatherFilteredDataObj(currWeather);
+        const currWeatherObj = helpers.getWeatherFilteredDataObj(currForecast);
         // console.log(currForecast);
         return (
             <div className="">
-
                 <div className="row ">
                     <div className="col-md-12">
                         <SearchWeather></SearchWeather>
@@ -48,31 +57,26 @@ class Home extends Component {
                                 </Fade>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div >
         )
     }
 }
-//getCurrentForecast
-const mapStateToProps = state => {
 
+const mapStateToProps = state => {
+    console.log(state)
     return {
-        currWeather: state.sitesReducer.currWeather,
-        currForecast: state.sitesReducer.currForecast
+        currForecast: state.sitesReducer.currForecast,
+        cityCode: state.sitesReducer.cityCode
     }
 }
 
 const mapDispatchToProps = disaptch => {
     return {
-        getCurrentWeather() {
-            disaptch(getCurrentWeather())
-        },
-        getCurrentForecast() {
-            disaptch(getCurrentForecast())
+
+        getCurrentForecast(cityCode) {
+            disaptch(getCurrentForecast(cityCode))
         },
     }
 }

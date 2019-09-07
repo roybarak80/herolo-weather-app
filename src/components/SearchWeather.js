@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { searchWeatherByCity } from '../actions/sitesActions';
+import { searchWeatherByCity, updateSearchField } from '../actions/sitesActions';
 
-const SearchWeather = ({ cityName, onChange }) => (
+const SearchWeather = ({ cityName, isSearchFieldValid, onChange, onSendClicked }) => (
     <div className="row form-group">
         <div className="col-md-12 flex-center-justify">
             <h1>cityName, {cityName}</h1>
@@ -10,7 +10,10 @@ const SearchWeather = ({ cityName, onChange }) => (
             <input className="form-control search-input"
                 value={cityName}
                 onChange={(e) => { onChange(e.target.value) }}
-                type="text" />
+                type="text"
+            />
+            <button onClick={() => { onSendClicked(cityName) }}>Foo</button>
+            {!isSearchFieldValid ? 'Invalid' : ''}
         </div>
 
     </div>
@@ -19,12 +22,14 @@ const SearchWeather = ({ cityName, onChange }) => (
 const mapStateToProps = state => {
     console.log(state)
     return {
-        cityName: state.cityName
+        cityName: state.sitesReducer.cityName,
+        isSearchFieldValid: state.sitesReducer.isSearchFieldValid
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    onChange: (value) => { dispatch(searchWeatherByCity(value)) }
+    onChange: (value) => { dispatch(updateSearchField(value)) },
+    onSendClicked: (value) => { dispatch(searchWeatherByCity(value)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchWeather);
