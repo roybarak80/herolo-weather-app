@@ -7,22 +7,22 @@ const CurrentWeather = (props) => {
 
     const { weatherInfo } = props;
     if (weatherInfo) {
+        let inputhtml = weatherInfo.TemperatureUnitsIcon;
         return (
             <div className="flex-center">
-
-                <img className="weather-icon"
-                    src={`https://developer.accuweather.com/sites/default/files/${weatherInfo.icon}-s.png`}
+                {weatherInfo.WeatherIcon ? <img className="weather-icon"
+                    src={`https://developer.accuweather.com/sites/default/files/${weatherInfo.WeatherIcon}-s.png`}
                     alt="Sunny"
-                    title={weatherInfo.iconPhrase}></img>
+                    title={weatherInfo.WeatherText}></img>
+                    : <i className="fa fa-sun"></i>}
+
                 <div className="weather-city-wrapper">
-                    <div className="weather-city-title">{weatherInfo.city}</div>
+                    <div className="weather-city-title">{weatherInfo.WeatherCity}</div>
                     <div>
-                        <span>{weatherInfo.maxTemp}&#8451; - </span>
-                        <span>{weatherInfo.minTemp}&#8451; </span>
+
+                        <span>{weatherInfo.Temperature}</span><span dangerouslySetInnerHTML={{ __html: inputhtml }}></span>
                     </div>
                 </div>
-
-
             </div>
         )
 

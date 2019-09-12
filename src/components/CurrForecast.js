@@ -6,7 +6,8 @@ import Helpers from '../helpers/Helpers';
 const CurrForecast = (props) => {
 
     const { currForecast } = props;
-
+    const tempIcon = currForecast.isMetricUnits ? '&#8451;' : '&#8457;';
+    let inputhtml = tempIcon;
     if (currForecast) {
         let dailyForecastsList = [];
         const dailyForecasts = currForecast['DailyForecasts'];
@@ -19,8 +20,9 @@ const CurrForecast = (props) => {
 
                     <span className="forecast-day-text">{dayOfWeek}</span>
                     <span className="forecast-temp">
-                        {prm.Temperature.Maximum.Value} &#8451;
-                         </span>
+
+                        {prm.Temperature.Maximum.Value}
+                    </span><span dangerouslySetInnerHTML={{ __html: inputhtml }}></span>
 
                 </li>;
             })

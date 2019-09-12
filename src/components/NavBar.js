@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+const NavBar = ({ isDarkTheme }) => (
 
-const NavBar = () => (
-
-  <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <nav className={isDarkTheme ? 'navbar navbar-expand-lg navbar-dark bg-dark static-top' : 'navbar navbar-expand-lg light-theme static-top'} >
     <div className="container">
       <Link className="navbar-brand" to="/">Herolo Weather App</Link>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,8 +23,12 @@ const NavBar = () => (
       </div>
     </div>
   </nav>
-
-
 );
 
-export default NavBar;
+const mapStateToProps = state => {
+  return {
+    isDarkTheme: state.sitesReducer.isDarkTheme,
+  }
+}
+
+export default connect(mapStateToProps)(NavBar);

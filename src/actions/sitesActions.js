@@ -1,31 +1,158 @@
+import dataApi from './dataService';
 
 const defaultCityCode = 215854;
-const apiKey = 'FNmwUFAldRAOU6phF57H4dK1bdWGhBal'; // to do config
+//const apiKey = 'process.env.REACT_APP_API_KEY'; 
+//8TtD5SvGpdCQKaGaT3JLAtitbpZxyJvN
+//AKYAzUjXGDLV2Eyr2L68TInkVV9530H3
+//FNmwUFAldRAOU6phF57H4dK1bdWGhBal
+const apiKey = 'FNmwUFAldRAOU6phF57H4dK1bdWGhBal'//'AKYAzUjXGDLV2Eyr2L68TInkVV9530H3';
+const api_root_url = "http://dataservice.accuweather.com/";
+const axios = require('axios');
 
-const forecastObj = { "Headline": { "EffectiveDate": "2019-09-07T08:00:00+03:00", "EffectiveEpochDate": 1567832400, "Severity": 4, "Text": "Pleasant this weekend", "Category": "", "EndDate": null, "EndEpochDate": null, "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/extended-weather-forecast/215854?unit=c&lang=en-us", "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?unit=c&lang=en-us" }, "DailyForecasts": [{ "Date": "2019-09-06T07:00:00+03:00", "EpochDate": 1567742400, "Temperature": { "Minimum": { "Value": 23.5, "Unit": "C", "UnitType": 17 }, "Maximum": { "Value": 31.0, "Unit": "C", "UnitType": 17 } }, "Day": { "Icon": 1, "IconPhrase": "Sunny", "HasPrecipitation": false }, "Night": { "Icon": 34, "IconPhrase": "Mostly clear", "HasPrecipitation": false }, "Sources": ["AccuWeather"], "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=1&unit=c&lang=en-us", "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=1&unit=c&lang=en-us" }, { "Date": "2019-09-07T07:00:00+03:00", "EpochDate": 1567828800, "Temperature": { "Minimum": { "Value": 26.2, "Unit": "C", "UnitType": 17 }, "Maximum": { "Value": 30.8, "Unit": "C", "UnitType": 17 } }, "Day": { "Icon": 3, "IconPhrase": "Partly sunny", "HasPrecipitation": false }, "Night": { "Icon": 36, "IconPhrase": "Intermittent clouds", "HasPrecipitation": false }, "Sources": ["AccuWeather"], "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=2&unit=c&lang=en-us", "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=2&unit=c&lang=en-us" }, { "Date": "2019-09-08T07:00:00+03:00", "EpochDate": 1567915200, "Temperature": { "Minimum": { "Value": 24.6, "Unit": "C", "UnitType": 17 }, "Maximum": { "Value": 30.7, "Unit": "C", "UnitType": 17 } }, "Day": { "Icon": 3, "IconPhrase": "Partly sunny", "HasPrecipitation": false }, "Night": { "Icon": 35, "IconPhrase": "Partly cloudy", "HasPrecipitation": false }, "Sources": ["AccuWeather"], "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=3&unit=c&lang=en-us", "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=3&unit=c&lang=en-us" }, { "Date": "2019-09-09T07:00:00+03:00", "EpochDate": 1568001600, "Temperature": { "Minimum": { "Value": 23.7, "Unit": "C", "UnitType": 17 }, "Maximum": { "Value": 30.6, "Unit": "C", "UnitType": 17 } }, "Day": { "Icon": 2, "IconPhrase": "Mostly sunny", "HasPrecipitation": false }, "Night": { "Icon": 34, "IconPhrase": "Mostly clear", "HasPrecipitation": false }, "Sources": ["AccuWeather"], "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=4&unit=c&lang=en-us", "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=4&unit=c&lang=en-us" }, { "Date": "2019-09-10T07:00:00+03:00", "EpochDate": 1568088000, "Temperature": { "Minimum": { "Value": 23.4, "Unit": "C", "UnitType": 17 }, "Maximum": { "Value": 30.5, "Unit": "C", "UnitType": 17 } }, "Day": { "Icon": 1, "IconPhrase": "Sunny", "HasPrecipitation": false }, "Night": { "Icon": 35, "IconPhrase": "Partly cloudy", "HasPrecipitation": false }, "Sources": ["AccuWeather"], "MobileLink": "http://m.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=5&unit=c&lang=en-us", "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/daily-weather-forecast/215854?day=5&unit=c&lang=en-us" }] }
-export const getCurrentForecast = (cityCode) => {
+
+//http://dataservice.accuweather.com/forecasts/v1/daily/1day/215854?apikey=FNmwUFAldRAOU6phF57H4dK1bdWGhBal
+export const getCurrentWeather = (prmCityCode) => {
+
+    return {
+        type: "GET_CURRENT_WEATHER",
+        payload: dataApi.getCurrDayForeCast()
+    };
+    // return async dispatch => {
+    //     fetch(`http://dataservice.accuweather.com/currentconditions/v1/${prmCityCode}?apikey=${apiKey}`)
+    //         .then(function (response) {
+    //             console.log(response);
+    //             return response.json();
+    //         })
+    //         .then(function (data) {
+    //             return dispatch({
+    //                 type: "GET_CURRENT_WEATHER",
+    //                 payload: data
+    //             });
+    //         });
+    // };
+};
+
+export const getCurrentForecast = (prmCityCode, prmIsMetricUnits) => {
     //defaultCityCode
 
-    ///console.log();
-    // return {
-    //     type: "GET_CURRENT_FORECAST",
-    //     payload: forecastObj
-    // };
-
-    return async dispatch => {
-        fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityCode}?apikey=${apiKey}&metric=true`)
-            .then(function (response) {
-
-                return response.json();
-            })
-            .then(function (data) {
-                return dispatch({
-                    type: "GET_CURRENT_FORECAST",
-                    payload: data
-                });
-            });
+    //console.log(prmIsMetricUnits);
+    return {
+        type: "GET_CURRENT_FORECAST",
+        payload: dataApi.getCurrWeekForeCast()
     };
+
+    // return async dispatch => {
+    //     fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${prmCityCode}?apikey=${apiKey}&metric=${prmIsMetricUnits}`)
+    //         .then(function (response) {
+
+    //             return response.json();
+    //         })
+    //         .then(function (data) {
+    //             return dispatch({
+    //                 type: "GET_CURRENT_FORECAST",
+    //                 payload: data
+    //             });
+    //         });
+    // };
 };
+
+export const toggleShowResults = (isShowResults) => {
+
+    isShowResults = !isShowResults
+    return {
+        type: "TOGGLE_SHOW_RESULTS",
+        payload: isShowResults
+    };
+}
+export const toggleWeatherUnits = (isMetricUnits) => {
+
+    console.log(isMetricUnits)
+    isMetricUnits = !isMetricUnits
+    return {
+        type: "TOGGLE_WEATHER_UNITS",
+        payload: isMetricUnits
+    };
+}
+
+
+export const onSelectCity = selectedCity => {
+    console.log('selectedCity', selectedCity);
+    return {
+        type: "SELECT_CITY_FORECAST",
+        payload: selectedCity
+    };
+}
+export const searchCityAutoComplete = searchText => {
+    const data = dataApi.getCurrAutoCompleteData();
+    let filterdata = [];
+    console.log(3456, searchText);
+    if (!!searchText && searchText.length > 0) {
+        const textToSearch = searchText.toLowerCase().trim();
+        filterdata = data.filter(prm => { return prm.LocalizedName.toLowerCase().trim().indexOf(textToSearch) > -1 });
+
+    }
+
+    return {
+        type: "AUTOCOMPLETE_SEARCH",
+        payload: filterdata
+    };
+    // return async dispatch => {
+    //     fetch(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${apiKey}&q=${searchText}`)
+    //         .then(function (response) {
+
+    //             return response.json();
+    //         })
+    //         .then(function (data) {
+    //             return dispatch({
+    //                 type: "AUTOCOMPLETE_SEARCH",
+    //                 payload: data
+    //             });
+    //         });
+    // };
+}
+export const addForecastToFavorites = (currCityCode) => {
+    console.log(currCityCode);
+    return {
+        type: "ADD_TO_FAVORITES",
+        payload: currCityCode
+    };
+}
+
+export const toggleSideMenu = (currSideMenuState) => {
+
+    currSideMenuState = !currSideMenuState;
+    return {
+        type: "SET_SIDEMENU_STATE",
+        payload: currSideMenuState
+    };
+}
+
+export const toggleThemeType = (currThemeType) => {
+
+    currThemeType = !currThemeType;
+    return {
+        type: "TOGGLE_THEME_TYPE",
+        payload: currThemeType
+    };
+}
+
+export const getForecastByCityCode = (favoriteCitiesNames) => {
+
+    return {
+        type: "FETCHING_DATA",
+        payload: favoriteCitiesNames
+    };
+
+}
+// export const ToggleWeatherUnits = (currThemeType) => {
+
+//     currThemeType = !currThemeType;
+//     return {
+//         type: "TOGGLE_THEME_TYPE",
+//         payload: currThemeType
+//     };
+// }
+
 
 export const updateSearchField = (cityName) => {
     // Check if input is OK

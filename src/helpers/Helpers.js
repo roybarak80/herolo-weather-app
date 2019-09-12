@@ -45,52 +45,50 @@ const helpers = {
         return outObj;
 
     },
-    getWeatherFilteredDataObj: function (prmProps) {
-        const isDayTime = this.checkIfDayTime();
-        let weatherIcon = '';
-        const currWeatherObj = prmProps;
+    getWeatherFilteredDataObj: function (prmCurrWeatherObj, prmIsMetric) {
+
+        //const isDayTime = this.checkIfDayTime();
+
+        //const currWeatherObj = prmProps;
 
         let weatherDataObj = {
-            icon: '',
-            city: '',
-            iconPhrase: '',
-            country: '',
-            minTemp: '',
-            maxTemp: '',
-            currDate: '',
+            WeatherIcon: '',
+            WeatherText: '',
+            WeatherCity: '',
+            WeatherCountry: '',
+            Temperature: '',
+            TemperatureUnitsIcon: '',
+            Date: '',
         };
 
+        if (!!prmCurrWeatherObj && prmCurrWeatherObj.length > 0) {
+            const currWeatherObj = prmCurrWeatherObj[0];
 
-        if (currWeatherObj.hasOwnProperty('DailyForecasts')) {
-            let weatherInfo = {};
+            let weatherIcon = '';
             let titleDataObj = {};
 
-            if (!!isDayTime) {
-                weatherInfo = currWeatherObj.DailyForecasts[0].Day;
-            } else {
-                weatherInfo = currWeatherObj.DailyForecasts[0].Night;
-            }
-
-            weatherIcon = weatherInfo.Icon.toString();
+            weatherIcon = currWeatherObj.WeatherIcon.toString();
             if (weatherIcon.length < 2) {
                 weatherIcon = 0 + weatherIcon;
             }
 
-            if (currWeatherObj.hasOwnProperty('Headline')) {
-                const linkStr = currWeatherObj.Headline.Link.toString();
+            if (currWeatherObj.hasOwnProperty('Link')) {
+
+                const linkStr = currWeatherObj['Link'].toString();
+
                 titleDataObj = this.getLocationInfo(linkStr);
-
+                
             }
-            weatherDataObj.icon = weatherIcon;
-            weatherDataObj.iconPhrase = weatherInfo.IconPhrase
-            weatherDataObj.minTemp = currWeatherObj.DailyForecasts[0].Temperature.Minimum.Value;
-            weatherDataObj.maxTemp = currWeatherObj.DailyForecasts[0].Temperature.Maximum.Value;
-            weatherDataObj.currDate = currWeatherObj.DailyForecasts[0].Date;
-            weatherDataObj.city = titleDataObj.city;
-            weatherDataObj.country = titleDataObj.country;
 
-
+            weatherDataObj.WeatherIcon = weatherIcon;
+            weatherDataObj.WeatherText = currWeatherObj.WeatherText;
+            weatherDataObj.Temperature = prmIsMetric ? currWeatherObj.Temperature.Metric.Value : currWeatherObj.Temperature.Imperial.Value;
+            weatherDataObj.TemperatureUnitsIcon = prmIsMetric ? '&#8451;' : '&#8457;';
+            weatherDataObj.currDate = currWeatherObj.LocalObservationDateTime;
+            weatherDataObj.WeatherCity = titleDataObj.city;
+            weatherDataObj.WeatherCountry = titleDataObj.country;
         }
+
 
         return weatherDataObj;
     },
